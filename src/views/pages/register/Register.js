@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-
 import {
   CButton,
   CCard,
@@ -11,7 +9,6 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CLink,
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -62,10 +59,6 @@ const Register = () => {
                     <CButton color="success">Create Account</CButton>
                   </div>
                 </CForm>
-                <div className='d-grid mt-3'>
-
-                  <p>Already have an account?<Link to="/login" className='link'> Login</Link> </p>
-                </div>
               </CCardBody>
             </CCard>
           </CCol>
