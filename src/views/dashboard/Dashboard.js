@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
 
 import {
   CAvatar,
@@ -53,9 +54,24 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import { getComplaints } from 'src/service/app.service'
 
-const Dashboard = () => {
+const Dashboard =  () => {
+  const [complainer, setcomplainer] = useState([])
+
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+
+  async function fetchComplaints() {
+    let complaints = await getComplaints()
+    console.log(complaints);
+    setcomplainer(complaints)
+  }
+
+
+  useEffect(() => {
+    fetchComplaints()
+
+  }, [])
 
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
@@ -86,7 +102,6 @@ const Dashboard = () => {
     { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
     { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
   ]
-
   const tableExample = [
     {
       avatar: { src: avatar1, status: 'success' },
@@ -178,10 +193,11 @@ const Dashboard = () => {
     },
   ]
 
+
   return (
     <>
-      <WidgetsDropdown />
-      <CCard className="mb-4">
+      {/* <WidgetsDropdown /> */}
+      {/* <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
@@ -306,27 +322,27 @@ const Dashboard = () => {
             ))}
           </CRow>
         </CCardFooter>
-      </CCard>
+      </CCard> */}
 
-      <WidgetsBrand withCharts />
+      {/* <WidgetsBrand withCharts /> */}
 
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>Complaints </CCardHeader>
             <CCardBody>
               <CRow>
                 <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
-                        <div className="text-medium-emphasis small">New Clients</div>
+                        <div className="text-medium-emphasis small">New Complaints</div>
                         <div className="fs-5 fw-semibold">9,123</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Recurring Clients</div>
+                        <div className="text-medium-emphasis small">Complaints in Progress</div>
                         <div className="fs-5 fw-semibold">22,643</div>
                       </div>
                     </CCol>
@@ -350,16 +366,16 @@ const Dashboard = () => {
                   <CRow>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Pageviews</div>
+                        <div className="text-medium-emphasis small">Resolves</div>
                         <div className="fs-5 fw-semibold">78,623</div>
                       </div>
                     </CCol>
-                    <CCol sm={6}>
+                    {/* <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">Organic</div>
                         <div className="fs-5 fw-semibold">49,123</div>
                       </div>
-                    </CCol>
+                    </CCol> */}
                   </CRow>
 
                   <hr className="mt-0" />
@@ -400,51 +416,48 @@ const Dashboard = () => {
               <br />
 
               <CTable align="middle" className="mb-0 border" hover responsive>
-                <CTableHead color="light">
+                <CTableHead color="dark">
                   <CTableRow>
-                    <CTableHeaderCell className="text-center">
+                    {/* <CTableHeaderCell className="text-center">
                       <CIcon icon={cilPeople} />
-                    </CTableHeaderCell>
-                    <CTableHeaderCell>User</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Country</CTableHeaderCell>
-                    <CTableHeaderCell>Usage</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Payment Method</CTableHeaderCell>
-                    <CTableHeaderCell>Activity</CTableHeaderCell>
+                    </CTableHeaderCell> */}
+                    <CTableHeaderCell>complainer</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Mobile.no</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Images</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Address</CTableHeaderCell>
+                    <CTableHeaderCell>Status</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
+                  {complainer.map((item, index) => (
+                    <CTableRow v-for="item in tableItems" key={index} >
+                      {/* <CTableDataCell className="text-center">
                         <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
-                      </CTableDataCell>
+                      </CTableDataCell> */}
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-medium-emphasis">
+                        <div>{item.userName}</div>
+                        {/* <div className="small text-medium-emphasis">
                           <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
                           {item.user.registered}
-                        </div>
+                        </div> */}
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
+                        <div>{item.userNumber}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">{item.usage.period}</small>
-                          </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
+                        <div className='d-flex'>
+                          {
+                            item.images.map((imagedata) => (
+                              <img className='mx-1' height={60} width={60} src={imagedata.imageBuffer} />
+                            ))
+                          }
+                        </div>                  
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
+                        <div>{item.address?.address}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="small text-medium-emphasis">Last login</div>
-                        <strong>{item.activity}</strong>
+                        <strong>{item.status}</strong>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
